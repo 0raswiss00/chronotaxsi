@@ -6,8 +6,8 @@ void main() async {
 
   // Inicializimi i Supabase
   await Supabase.initialize(
-    url: 'URL_E_SUPABASE_TUAJ', // Zëvendësoje me URL-në tënde
-    anonKey: 'ANON_KEY_E_SUPABASE_TUAJ', // Zëvendësoje me Anon Key tënde
+    url: 'https://kywltgbvtlwxokunqjaw.supabase.co', // Zëvendësoje me URL-në tënde
+    anonKey: 'sb_publishable_nmtrczbOxxwnvWwHP0AiOQ_kjFwup0U', // Zëvendësoje me Anon Key tënde
   );
 
   runApp(const MyApp());
