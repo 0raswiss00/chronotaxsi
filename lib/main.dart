@@ -1,158 +1,102 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
-  runApp(const ChronoTaxsiApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicializimi i Supabase
+  await Supabase.initialize(
+    url: 'URL_E_SUPABASE_TUAJ', // Zëvendësoje me URL-në tënde
+    anonKey: 'ANON_KEY_E_SUPABASE_TUAJ', // Zëvendësoje me Anon Key tënde
+  );
+
+  runApp(const MyApp());
 }
 
-class ChronoTaxsiApp extends StatelessWidget {
-  const ChronoTaxsiApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'ChronoTaxsi',
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.black,
-          brightness: Brightness.light,
-        ),
-        scaffoldBackgroundColor: Colors.white,
       ),
-      home: const WelcomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      appBar: AppBar(
+        title: const Text('ChronoTaxsi - Zgjidhni Rrugën Tuaj'),
+      ),
+      body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 28),
+          padding: const EdgeInsets.all(24.0),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(),
-
-              // Logo
-              Container(
-                width: 110,
-                height: 110,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  borderRadius: BorderRadius.circular(30),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
-                child: const Icon(
-                  Icons.local_taxi_rounded,
-                  color: Colors.white,
-                  size: 60,
-                ),
-              ),
-
-              const SizedBox(height: 28),
-
-              const Text(
-                'ChronoTaxsi',
-                style: TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -1,
-                ),
-              ),
-
-              const SizedBox(height: 12),
-
-              const Text(
-                'Your ride. Your time. Your journey.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 17,
-                  color: Colors.grey,
-                ),
-              ),
-
-              const Spacer(),
-
-              // Get Started
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const RoleScreen(),
-                      ),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ClientRegisterScreen(),
                     ),
-                  ),
-                  child: const Text(
-                    'Get Started',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
+                  );
+                },
+                icon: const Icon(Icons.person_add),
+                label: const Text('Regjistrohu si Klient'),
               ),
-
-              const SizedBox(height: 14),
-
-              // Login
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const LoginScreen(),
-                      ),
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.black,
-                    side: const BorderSide(
-                      color: Colors.black,
-                      width: 1.5,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: const Text(
-                    'I already have an account',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ClientSearchScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.search),
+                label: const Text('Jam Klient – Kërko Mjet'),
               ),
-
-              const SizedBox(height: 30),
-
-              const Text(
-                'Global taxi platform',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 13,
+              const SizedBox(height: 16),
+              OutlinedButton.icon(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  textStyle: const TextStyle(fontSize: 18),
                 ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const DriverRegisterScreen(),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.drive_eta),
+                label: const Text('Regjistrohu si Shofer (Shto Mjetin)'),
               ),
-
-              const SizedBox(height: 15),
             ],
           ),
         ),
@@ -161,330 +105,203 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-class RoleScreen extends StatelessWidget {
-  const RoleScreen({super.key});
+// --- 1. Regjistrimi i Klientit ---
+class ClientRegisterScreen extends StatefulWidget {
+  const ClientRegisterScreen({super.key});
+
+  @override
+  State<ClientRegisterScreen> createState() => _ClientRegisterScreenState();
+}
+
+class _ClientRegisterScreenState extends State<ClientRegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  bool _isLoading = false;
+
+  void _registerClient() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      try {
+        await Supabase.instance.client.from('clients').insert({
+          'name': _nameController.text.trim(),
+          'phone': _phoneController.text.trim(),
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('U regjistruat me sukses si klient!')),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const ClientSearchScreen()),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Gabim: $e')),
+          );
+        }
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Choose your role'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Regjistrohu si Klient')),
       body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              'How will you use ChronoTaxsi?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            _RoleCard(
-              icon: Icons.person_rounded,
-              title: 'Passenger',
-              subtitle: 'Find a taxi and book your ride',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const PassengerHome(),
-                  ),
-                );
-              },
-            ),
-
-            const SizedBox(height: 18),
-
-            _RoleCard(
-              icon: Icons.drive_eta_rounded,
-              title: 'Driver',
-              subtitle: 'Accept rides and earn money',
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const DriverHome(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _RoleCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  const _RoleCard({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.all(22),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.grey.shade300,
-          ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 30,
-              ),
-            ),
-
-            const SizedBox(width: 18),
-
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    subtitle,
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const Icon(
-              Icons.arrow_forward_ios_rounded,
-              size: 18,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-
-            const Text(
-              'Welcome back',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
-            const SizedBox(height: 35),
-
-            TextField(
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                prefixIcon: const Icon(Icons.email_outlined),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Emri Mbiemri',
+                  border: OutlineInputBorder(),
                 ),
+                validator: (v) => v ==ica v!.isEmpty ? 'Shkruani emrin' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _phoneController,
+                decoration: const InputDecoration(
+                  labelText: 'Numri i Telefonit',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (v) => v == null || v.isEmpty ? 'Shkruani numrin' : null,
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _registerClient,
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    chno: const Text('Vazhdo te Kërkimi'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// --- 2. Ekrani i Kërkimit të Mjetit nga Klienti ---
+class ClientSearchScreen extends StatefulWidget {
+  const ClientSearchScreen({super.key});
+
+  @override
+  State<ClientSearchScreen> createState() => _ClientSearchScreenState();
+}
+
+class _ClientSearchScreenState extends State<ClientSearchScreen> {
+  final TextEditingController _fromController = TextEditingController();
+  final TextEditingController _toController = TextEditingController();
+  String _selectedCategory = 'Taksi'; // Taksë, Furgon, Kamper, Motor
+  List<dynamic> _searchResults = [];
+  bool _isSearching = false;
+
+  void _searchVehicles() async {
+    setState(() => _isSearching = true);
+    try {
+      final response = await Supabase.instance.client
+          .from('drivers')
+          .select()
+          .eq('category', _selectedCategory);
+
+      setState(() {
+        _searchResults = response;
+      });
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Gabim gjatë kërkimit: $e')),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isSearching = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Kërko Mjet / Taksi - Klient')),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _fromController,
+              decoration: const InputDecoration(
+                labelText: 'Nga (Vendndodhja)',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.my_location),
               ),
             ),
-
+            const SizedBox(height: 12),
+            TextField(
+              controller: _toController,
+              decoration: const InputDecoration(
+                labelText: 'Për ku (Destinacioni)',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.location_on),
+              ),
+            ),
+            const SizedBox(height: 12),
+            DropdownButtonFormField<String>(
+              value: _selectedCategory,
+              decoration: const InputDecoration(
+                labelText: 'Zgjidh Llojin e Mjetit',
+                border: OutlineInputBorder(),
+              ),
+              items: const [
+                DropdownMenuItem(value: 'Taksi', child: Text('🚕 Taksë')),
+                DropdownMenuItem(value: 'Furgon', child: Text('🚐 Furgon')),
+                DropdownMenuItem(value: 'Kamper', child: Text('🏕️ Kamper')),
+                DropdownMenuItem(value: 'Motor', child: Text('🏍️ Motor')),
+              ],
+              onChanged: (val) {
+                if (val != null) setState(() => _selectedCategory = val);
+              },
+            ),
             const SizedBox(height: 16),
-
-            TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                prefixIcon: const Icon(Icons.lock_outline),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                minimumSize: const Size.fromHeight(50),
               ),
+              onPressed: _isSearching ? null : _searchVehicles,
+              icon: const Icon(Icons.search),
+              label: _isSearching
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text('Kërko Mjete të Lira', style: TextStyle(fontSize: 16)),
             ),
-
-            const SizedBox(height: 25),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                child: const Text(
-                  'Login',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PassengerHome extends StatelessWidget {
-  const PassengerHome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('ChronoTaxsi'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Where do you want to go?',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-
             const SizedBox(height: 20),
-
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                color: Colors.grey.shade100,
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: const Row(
-                children: [
-                  Icon(Icons.search),
-                  SizedBox(width: 12),
-                  Text(
-                    'Search destination',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 16,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 25),
-
             Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(22),
-                ),
-                child: const Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.map_outlined,
-                        size: 65,
-                        color: Colors.grey,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Map will appear here',
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 15),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Request a Taxi',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              child: _searchResults.isEmpty
+                  ? const Center(child: Text('Nuk u gjet asnjë mjet ende. Bëni një kërkim!'))
+                  : ListView.builder(
+                      itemCount: _searchResults.length,
+                      itemBuilder: (context, index) {
+                        final driver = _searchResults[index];
+                        return Card(
+                          child: ListTile(
+                            leading: const Icon(Icons.directions_car, color: Colors.blue),
+                            title: Text(driver['name'] ?? 'Pa emër'),
+                            subtitle: Text('Mjeti: ${driver['vehicle_type']} - Qyteti: ${driver['city']}'),
+                            trailing: Text(driver['category'] ?? ''),
+                          ),
+                        );
+                      },
+                    ),
             ),
           ],
         ),
@@ -493,73 +310,138 @@ class PassengerHome extends StatelessWidget {
   }
 }
 
-class DriverHome extends StatelessWidget {
-  const DriverHome({super.key});
+// --- 3. Regjistrimi i Shoferit ---
+class DriverRegisterScreen extends StatefulWidget {
+  const DriverRegisterScreen({super.key});
+
+  @override
+  State<DriverRegisterScreen> createState() => _DriverRegisterScreenState();
+}
+
+class _DriverRegisterScreenState extends State<DriverRegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _vehicleTypeController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+
+  String? _selectedZone;
+  String _selectedVehicleCategory = 'Taksi';
+  bool _hasConditioner = false;
+  String _paymentMethod = 'Cash';
+  bool _isLoading = false;
+
+  final List<String> _albanianCities = [
+    'Tiranë', 'Durrës', 'Vlorë', 'Shkodër', 'Elbasan',
+    'Fier', 'Korçë', 'Berat', 'Lushnjë', 'Kavajë', 'Sarandë'
+  ];
+
+  void _registerDriver() async {
+    if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+      try {
+        await Supabase.instance.client.from('drivers').insert({
+          'name': _nameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'category': _selectedVehicleCategory,
+          'vehicle_type': _vehicleTypeController.text.trim(),
+          'city': _selectedZone,
+          'description': _descriptionController.text.trim(),
+          'has_conditioner': _hasConditioner,
+          'payment_method': _paymentMethod,
+        });
+
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Mjeti u regjistrua me sukses në Supabase!')),
+          );
+          Navigator.pop(context);
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Gabim: $e')),
+          );
+        }
+      } finally {
+        if (mounted) setState(() => _isLoading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Driver'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const SizedBox(height: 30),
-
-            const Icon(
-              Icons.drive_eta_rounded,
-              size: 80,
-            ),
-
-            const SizedBox(height: 20),
-
-            const Text(
-              'Driver Dashboard',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
+      appBar: AppBar(title: const Text('Regjistrohu si Shofer - Shto Mjetin')),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Emri Mbiemri / Kompania', border: OutlineInputBorder()),
+                validator: (v) => v == null || v.isEmpty ? 'Shkruani emrin' : null,
               ),
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              'Go online to start receiving rides.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey,
-                fontSize: 16,
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email', border: OutlineInputBorder()),
+                validator: (v) => v == null || v.isEmpty ? 'Shkruani email-in' : null,
               ),
-            ),
-
-            const Spacer(),
-
-            SizedBox(
-              width: double.infinity,
-              height: 55,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                ),
-                child: const Text(
-                  'Go Online',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                value: _selectedVehicleCategory,
+                decoration: const InputDecoration(labelText: 'Kategoria e Mjetit', border: OutlineInputBorder()),
+                items: const [
+                  DropdownMenuItem(value: 'Taksi', child: Text('🚕 Taksë')),
+                  DropdownMenuItem(value: 'Furgon', child: Text('🚐 Furgon')),
+                  DropdownMenuItem(value: 'Kamper', child: Text('🏕️ Kamper')),
+                  DropdownMenuItem(value: 'Motor', child: Text('🏍️ Motor')),
+                ],
+                onChanged: (val) {
+                  if (val != null) setState(() => _selectedVehicleCategory = val);
+                },
               ),
-            ),
-
-            const SizedBox(height: 25),
-          ],
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _vehicleTypeController,
+                decoration: const InputDecoration(labelText: 'Modeli (p.sh. Mercedes 8 Vendesh)', border: OutlineInputBorder()),
+                validator: (v) => v == null || v.isEmpty ? 'Shkruani modelin' : null,
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<String>(
+                value: _selectedZone,
+                decoration: const InputDecoration(labelText: 'Zgjidh Qytetin / Zonën', border: OutlineInputBorder()),
+                items: _albanianCities.map((city) {
+                  return DropdownMenuItem(value: city, child: Text(city));
+                }).toList(),
+                onChanged: (val) => setState(() => _selectedZone = val),
+                validator: (v) => v == null ? 'Zgjidhni qytetin' : null,
+              ),
+              const SizedBox(height: 12),
+              TextFormField(
+                controller: _descriptionController,
+                maxLines: 3,
+                decoration: const InputDecoration(labelText: 'Përshkrimi / Detaje shtesë', border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 12),
+              SwitchListTile(
+                title: const Text('A ka Kondicioner?'),
+                value: _hasConditioner,
+                onChanged: (val) => setState(() => _hasConditioner = val),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _registerDriver,
+                child: _isLoading
+                    ? const CircularProgressIndicator(color: Colors.white)
+                    : const Text('Shto Mjetin në Sistem'),
+              ),
+            ],
+          ),
         ),
       ),
     );
